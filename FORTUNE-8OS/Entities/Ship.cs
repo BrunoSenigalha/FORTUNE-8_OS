@@ -22,7 +22,7 @@ namespace FORTUNE_8OS.Entities
 
         }
         public int Id { get; }
-        public string Name { get; set; }
+        public string Name { get; private set; }
         public decimal Credits { get; set; }
 
     }

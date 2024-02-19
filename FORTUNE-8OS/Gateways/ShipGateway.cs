@@ -16,8 +16,7 @@ namespace FORTUNE_8OS.Gateways
 
         public void PostShipDatabase(Ship ship)
         {
-
-            using (SqlConnection connection = new SqlConnection(ConnectionDatabase.ConnectionString()))
+            using (SqlConnection connection = new (ConnectionDatabase.ConnectionString()))
             {
                 connection.Open();
 
@@ -28,7 +27,7 @@ namespace FORTUNE_8OS.Gateways
         }
         public IEnumerable<Ship> GetShipList()
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionDatabase.ConnectionString()))
+            using (SqlConnection connection = new (ConnectionDatabase.ConnectionString()))
             {
                 connection.Open();
 
