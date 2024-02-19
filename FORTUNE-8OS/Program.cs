@@ -1,11 +1,20 @@
-﻿namespace FORTUNE_8OS
+﻿using FORTUNE_8OS.Gateways;
+using FORTUNE_8OS.Services;
+
+namespace FORTUNE_8OS
 {
     internal class Program
     {
         static void Main(string[] args)
         {
+            ShipGateway shipGateway = new ShipGateway();
+            ShipService shipService = new(shipGateway);
+            shipService.CreateShip();
+
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
+
+            Console.WriteLine($"{shipService.PrintShipCredits()}\n");
 
             Console.WriteLine("Welcome to the FORTUNE-8 OS");
             Console.WriteLine("          Courtesy of the Company");
@@ -24,6 +33,7 @@
                 switch (choice)
                 {
                     case "HELP":
+                        Console.WriteLine($"{shipService.PrintShipCredits()}\n");
                         //shipService.ShipMoney();
                         Console.WriteLine(">STORE");
                         Console.WriteLine("To see the company store's selection of useful items.\n");

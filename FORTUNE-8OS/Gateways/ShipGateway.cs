@@ -21,7 +21,7 @@ namespace FORTUNE_8OS.Gateways
             {
                 connection.Open();
 
-                string query = "INSERT INTO Ship (Name, Credits) " +
+                string query = "INSERT INTO Ships (Name, Credits) " +
                     "VALUES (@Name, @Credits)";
                 connection.Execute(query, ship);
             }
@@ -38,21 +38,6 @@ namespace FORTUNE_8OS.Gateways
                 return ship;
             }
         }
-
-        //public bool IsShipExistsOnDatabase()
-        //{
-        //    using (SqlConnection connection = new SqlConnection(ConnectionDatabase.ConnectionString()))
-        //    {
-        //        connection.Open();
-
-        //        string query = "SELECT COUNT(*) FROM Ships;";
-        //        int count = connection.QuerySingle<int>(query);
-
-        //        return count > 0;
-
-        //    }
-        //}
-
 
     }
 }

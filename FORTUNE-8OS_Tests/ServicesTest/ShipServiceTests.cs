@@ -9,7 +9,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
     public class ShipServiceTests
     {
         [Fact]
-        public void CreateShip_WhenShipDoesNotExists_ShoulCreateAndPostShip()
+        public void CreateShip_WhenShipDoesNotExists_ShouldCreateAndPostShip()
         {
             // Arrange
             var shipGatewayMock = new Mock<IShipGateway>();
@@ -73,6 +73,40 @@ namespace FORTUNE_8OS_Tests.ServicesTest
 
             // Assert
             Assert.Null(result);
+        }
+
+        [Fact]
+        public void PrintShipCredits_ReturnTheShipCredits_WhenIsNotNull()
+        {
+            // Arrange
+            var expectedShip = new Ship("ShipOne", 60M);
+
+            var shipGatewayMock = new Mock<IShipGateway>();
+            shipGatewayMock.Setup(p => p.GetShipList()).Returns(new List<Ship> { expectedShip });
+
+            var shipService = new ShipService(shipGatewayMock.Object);
+
+            // Act
+            var result = shipService.PrintShipCredits();
+
+            //Assert
+            Assert.Equal("\\60,00", result);
+        }
+
+        [Fact]
+        public void PrintShipCredits_ReturnTheShipCredits_WhenIsNull()
+        {
+            //Arrange
+            var shipGatewayMock = new Mock<IShipGateway>();
+            shipGatewayMock.Setup(p => p.GetShipList()).Returns(new List<Ship>());
+
+            var shipService = new ShipService(shipGatewayMock.Object);
+
+            //Act
+            var result = shipService.PrintShipCredits();
+
+            //Assert
+            Assert.Equal("\\0", result);
         }
     }
 }

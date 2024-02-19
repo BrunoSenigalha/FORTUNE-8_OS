@@ -21,3 +21,4 @@ C:\Users\brsen\source\repos\FORTUNE-8OS\FORTUNE-8OS\bin\Debug\net8.0\runtimes\un
 C:\Users\brsen\source\repos\FORTUNE-8OS\FORTUNE-8OS\bin\Debug\net8.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\brsen\source\repos\FORTUNE-8OS\FORTUNE-8OS\obj\Debug\net8.0\FORTUNE-8OS.csproj.AssemblyReference.cache
 C:\Users\brsen\source\repos\FORTUNE-8OS\FORTUNE-8OS\obj\Debug\net8.0\FORTUNE-.CA1B9C48.Up2Date
+C:\Users\brsen\source\repos\FORTUNE-8OS\FORTUNE-8OS\obj\Debug\net8.0\FORTUNE-8OS.sourcelink.json

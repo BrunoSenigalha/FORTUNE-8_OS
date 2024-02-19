@@ -115,3 +115,4 @@ C:\Users\brsen\source\repos\FORTUNE-8OS\FORTUNE-8OS_Tests\obj\Debug\net8.0\refin
 C:\Users\brsen\source\repos\FORTUNE-8OS\FORTUNE-8OS_Tests\obj\Debug\net8.0\FORTUNE-8OS_Tests.pdb
 C:\Users\brsen\source\repos\FORTUNE-8OS\FORTUNE-8OS_Tests\obj\Debug\net8.0\FORTUNE-8OS_Tests.genruntimeconfig.cache
 C:\Users\brsen\source\repos\FORTUNE-8OS\FORTUNE-8OS_Tests\obj\Debug\net8.0\ref\FORTUNE-8OS_Tests.dll
+C:\Users\brsen\source\repos\FORTUNE-8OS\FORTUNE-8OS_Tests\obj\Debug\net8.0\FORTUNE-8OS_Tests.sourcelink.json

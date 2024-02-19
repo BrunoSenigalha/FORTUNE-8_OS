@@ -8,14 +8,10 @@ using FORTUNE_8OS.Interfaces;
 
 namespace FORTUNE_8OS.Services
 {
-
-    public class ShipService
+    public class ShipService(IShipGateway shipGateway)
     {
-        private readonly IShipGateway _shipGateway;
-        public ShipService(IShipGateway shipGateway)
-        {
-            _shipGateway = shipGateway;
-        }
+        private readonly IShipGateway _shipGateway = shipGateway;
+
         public void CreateShip()
         {
             if (GetShip() is null)
@@ -32,6 +28,13 @@ namespace FORTUNE_8OS.Services
             var ship = shipDatabase.FirstOrDefault();
 
             return ship;
+        }
+
+        public string PrintShipCredits()
+        {
+            var ship = GetShip();
+
+            return ship != null ? $"\\{ship.Credits:F2}" : $"\\0";
         }
     }
 }
