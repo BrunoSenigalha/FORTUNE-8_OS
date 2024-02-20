@@ -26,14 +26,13 @@ namespace FORTUNE_8OS.Services
             return $"Item {item.Name} created successfully";
         }
 
-        public static Item CreatingNewItemObject()
+        public static Item CreateNewItemObject()
         {
-            Console.WriteLine("Enter with a name of the item: ");
+            Console.WriteLine("Enter a name of the item: ");
             string? name = Console.ReadLine();
 
             decimal credits;
-            bool validImput = false;
-
+            bool validImput;
             do
             {
                 Console.WriteLine("Enter product credits: ");
@@ -41,7 +40,7 @@ namespace FORTUNE_8OS.Services
 
                 if (!validImput)
                 {
-                    Console.WriteLine("Invalid input. Please, enter a valid decimal value for credits.");
+                    throw new InvalidOperationException("Wrong value for credits, please type again.");
                 }
             } while (!validImput);
 

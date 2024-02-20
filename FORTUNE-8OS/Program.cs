@@ -149,7 +149,7 @@ void ItemServicesMenu()
         {
             case "POST NEW ITEM":
                 Console.Clear();
-
+                    
                 break;
 
             case "LIST ITEMS":

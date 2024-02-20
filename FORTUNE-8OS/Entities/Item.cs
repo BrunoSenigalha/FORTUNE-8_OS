@@ -12,7 +12,7 @@ namespace FORTUNE_8OS.Entities
         public Item(string name, decimal credits)
         {
             DomainExceptionValidation.When(string.IsNullOrEmpty(name), "The field name can't be empty.");
-            DomainExceptionValidation.When(credits <= 0, "The field credits can't be less than iqual zero.");
+            DomainExceptionValidation.When(credits <= 0, "The field credits can't be less than or iqual zero.");
 
             Name = name;
             Credits = credits;
