@@ -52,28 +52,33 @@ namespace FORTUNE_8OS_Tests.ServicesTest
         public void CreateNewItemObject_ShouldReturnValidItem()
         {
             // Arrange
+            var itemGatewayMock = new Mock<IItemGateway>();
+            var itemService = new ItemService(itemGatewayMock.Object);
+
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture("ValidName", "10,5");
 
             // Act
-            var result = ItemService.CreateNewItemObject();
+            var result = itemService.CreateNewItemObject();
 
             // Assert
             Assert.Equal("ValidName", result.Name);
             Assert.Equal(10.5m, result.Credits);
-            consoleOutputCapture.Dispose(); 
-            consoleInputCapture.Dispose(); 
+            consoleOutputCapture.Dispose();
+            consoleInputCapture.Dispose();
         }
 
         [Fact]
         public void CreateNewItemObject_WhenInvalidCredits_ShouldReturnThrowException()
         {
             //Arrange
+            var itemGatewayMock = new Mock<IItemGateway>();
+            var itemService = new ItemService(itemGatewayMock.Object);
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture("ValidName", "NotANumber");
 
             //Act
-            var exception = Assert.Throws<InvalidOperationException>(() => ItemService.CreateNewItemObject());
+            var exception = Assert.Throws<InvalidOperationException>(() => itemService.CreateNewItemObject());
 
             //Assert
             Assert.Equal("Wrong value for credits, please type again.", exception.Message);
@@ -88,11 +93,13 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             string inputName, string inputCredits)
         {
             //Arrange
+            var itemGatewayMock = new Mock<IItemGateway>();
+            var itemService = new ItemService(itemGatewayMock.Object);
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(inputName, inputCredits);
 
             //Act
-            var exception = Assert.Throws<DomainExceptionValidation>(() => ItemService.CreateNewItemObject());
+            var exception = Assert.Throws<DomainExceptionValidation>(() => itemService.CreateNewItemObject());
 
             //Assert
             Assert.Equal("The field credits can't be less than or iqual zero.", exception.Message);
@@ -104,11 +111,13 @@ namespace FORTUNE_8OS_Tests.ServicesTest
         public void CreateNewItemObject_WhenInvalidName_ShouldReturnDomainExceptionValidation()
         {
             //Arrange
+            var itemGatewayMock = new Mock<IItemGateway>();
+            var itemService = new ItemService(itemGatewayMock.Object);
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture("", "10,5");
 
             //Act
-            var exception = Assert.Throws<DomainExceptionValidation>(() => ItemService.CreateNewItemObject());
+            var exception = Assert.Throws<DomainExceptionValidation>(() => itemService.CreateNewItemObject());
 
             //Assert
             Assert.Equal("The field name can't be empty.", exception.Message);
@@ -116,6 +125,25 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             consoleInputCapture.Dispose();
         }
 
+        [Fact]
+        public void UpdateItemFromDatabase_WhenValidNameAndConfirm_ShouldReturnConfirmationMessage()
+        {
+            //Arrange
+            var itemGatewayMock = new Mock<IItemGateway>();
+            itemGatewayMock.Setup(g => g.GetItemList()).Returns(new List<Item> { new Item(1, "ValidValue", 10.5M) });
+            var itemService = new ItemService(itemGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture("ValidValue", "CONFIRM", "NewValidName", "12,5");
+
+            //Act
+            var result = itemService.UpdateItem();
+
+            //Assert
+            Assert.Equal("Item NewValidName updated successfully", result);
+            itemGatewayMock.Verify(g => g.UpdateItem(It.IsAny<Item>()), Times.Once);
+
+        }
         private class ConsoleOutputCapture : IDisposable
         {
             private readonly System.IO.StringWriter stringWriter;

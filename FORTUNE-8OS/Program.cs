@@ -89,6 +89,9 @@ do
 
 void ProductServicesMenu()
 {
+    ItemGateway itemGateway = new ItemGateway();
+    ItemService itemService = new(itemGateway);
+
     Console.WriteLine(">POST NEW PRODUCT");
     Console.WriteLine("To post a new product\n");
 
@@ -102,29 +105,34 @@ void ProductServicesMenu()
     Console.WriteLine("To back to main menu\n");
 
     string choice;
-    do
+
+    choice = Console.ReadLine().ToUpper();
+    switch (choice)
     {
-        choice = Console.ReadLine().ToUpper();
-        switch (choice)
-        {
-            case "POST NEW PRODUCT":
-                break;
+        case "POST NEW PRODUCT":
+            var item = itemService.CreateNewItemObject();
+            Console.WriteLine(itemService.PostItem(item));
 
-            case "LIST PRODUCTS":
-                break;
+            break;
 
-            case "UPDATE PRODUCT":
-                break;
+        case "LIST PRODUCTS":
+            var items = itemService.GetItems();
+            Console.WriteLine();
+            foreach (var data in items)
+            {
+                Console.WriteLine(data.ToString());
+            }
+            Console.WriteLine();
 
-            case "BACK":
-                Console.Clear();
-                break;
+            break;
 
-            default:
-                Console.WriteLine($"Unknow Command \"{choice}\"");
-                break;
-        }
-    } while (choice != "BACK");
+        case "UPDATE PRODUCT":
+            break;
+
+        default:
+            Console.WriteLine($"Unknow Command \"{choice}\"");
+            break;
+    }
 }
 
 void ItemServicesMenu()
@@ -142,29 +150,22 @@ void ItemServicesMenu()
     Console.WriteLine("To back to main menu\n");
 
     string choice;
-    do
+    choice = Console.ReadLine().ToUpper();
+    switch (choice)
     {
-        choice = Console.ReadLine().ToUpper();
-        switch (choice)
-        {
-            case "POST NEW ITEM":
-                Console.Clear();
-                    
-                break;
+        case "POST NEW ITEM":
+            Console.Clear();
 
-            case "LIST ITEMS":
-                break;
+            break;
 
-            case "UPDATE ITEM":
-                break;
+        case "LIST ITEMS":
+            break;
 
-            case "BACK":
-                Console.Clear();
-                break;
+        case "UPDATE ITEM":
+            break;
 
-            default:
-                Console.WriteLine($"Unknow Command \"{choice}\"");
-                break;
-        }
-    } while (choice != "BACK");
+        default:
+            Console.WriteLine($"Unknow Command \"{choice}\"");
+            break;
+    }
 }

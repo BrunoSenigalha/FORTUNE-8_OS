@@ -28,5 +28,10 @@ namespace FORTUNE_8OS.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Credits { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Name} \\ {Credits}";
+        }
     }
 }
