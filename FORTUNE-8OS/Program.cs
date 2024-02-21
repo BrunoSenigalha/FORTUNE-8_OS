@@ -161,6 +161,8 @@ void ItemServicesMenu()
 
         case "READ ITEMS FROM FILE":
             Console.Clear();
+            message = itemService.ReadItemsFromFile();
+            Console.WriteLine(message);
             break;
 
         case "LIST ITEMS":

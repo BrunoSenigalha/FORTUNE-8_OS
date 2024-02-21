@@ -126,8 +126,11 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             consoleInputCapture.Dispose();
         }
 
-        [Fact]
-        public void UpdateItemFromDatabase_WhenValidNameAndConfirm_ShouldReturnConfirmationMessage()
+        [Theory]
+        [InlineData("ValidValue", "CONFIRM", "NewValidName", "12,5")]
+        [InlineData("validvaLUE", "confirm", "NewValidName", "12,5")]
+        public void UpdateItemFromDatabase_WhenValidNameAndConfirm_ShouldReturnConfirmationMessage(string inputName,
+            string inputOption, string inputNewName, string inputDecimal)
         {
             //Arrange
             var itemGatewayMock = new Mock<IItemGateway>();
@@ -135,7 +138,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             var itemService = new ItemService(itemGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
-            var consoleInputCapture = new ConsoleInputCapture("ValidValue", "CONFIRM", "NewValidName", "12,5");
+            var consoleInputCapture = new ConsoleInputCapture(inputName, inputOption, inputNewName, inputDecimal);
 
             //Act
             var result = itemService.UpdateItem();
@@ -190,8 +193,11 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             itemGatewayMock.Verify(g => g.UpdateItem(It.IsAny<Item>()), Times.Never);
         }
 
-        [Fact]
-        public void DeleteItemFromDatabase_WhenValidNameAndConfirm_ShouldReturnConfirmationMessage()
+        [Theory]
+        [InlineData("ValidValue", "CONFIRM")]
+        [InlineData("validvalue", "Confirm")]
+        [InlineData("VALIDVALUE", "confirm")]
+        public void DeleteItemFromDatabase_WhenValidNameAndConfirm_ShouldReturnConfirmationMessage(string inputName, string inputOption)
         {
             //Arrange
             var itemGatewayMock = new Mock<IItemGateway>();
@@ -199,7 +205,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             var itemService = new ItemService(itemGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
-            var consoleInputCapture = new ConsoleInputCapture("ValidValue", "CONFIRM");
+            var consoleInputCapture = new ConsoleInputCapture(inputName, inputOption);
 
             //Act
             var result = itemService.DeleteItem();
@@ -250,6 +256,84 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             //Assert
             Assert.Equal("Item not found", result);
             itemGatewayMock.Verify(d => d.DeleteItem(It.IsAny<int>()), Times.Never);
+        }
+
+        [Fact]
+        public void ReadItemsFromFile_WhenPathIsValidAndHasFourItems_ShouldReturnConfirmedMessage()
+        {
+            //Arrange
+            var itemGatewayMock = new Mock<IItemGateway>();
+            itemGatewayMock.Setup(g => g.GetItemList()).Returns(new List<Item>());
+            var itemService = new ItemService(itemGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture("C:\\Users\\brsen\\Desktop\\Curso C#\\list_of_items.txt");
+
+            //Act
+            var result = itemService.ReadItemsFromFile();
+
+            //Asset
+            Assert.Equal("Items were read successfully", result);
+            itemGatewayMock.Verify(r => r.PostItem(It.IsAny<Item>()), Times.Exactly(4));
+        }
+
+        [Theory]
+        [InlineData("Key", 3)]
+        [InlineData("key", 5)]
+        public void ReadItemsFromFile_WhenPathIsValidAndHasOneExistentItem_ShouldReturnConfirmedMessageAndPostItemThreeTimes(string inputName, decimal inputValue)
+        {
+            //Arrange
+            var itemGatewayMock = new Mock<IItemGateway>();
+            itemGatewayMock.Setup(g => g.GetItemList()).Returns(new List<Item> { new Item(inputName, inputValue) });
+            var itemService = new ItemService(itemGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture("C:\\Users\\brsen\\Desktop\\Curso C#\\list_of_items.txt");
+
+            //Act
+            var result = itemService.ReadItemsFromFile();
+
+            //Asset
+            Assert.Equal("Items were read successfully", result);
+            itemGatewayMock.Verify(r => r.PostItem(It.IsAny<Item>()), Times.Exactly(3));
+        }
+
+        [Fact]
+        public void ReadItemsFile_WhenPathIsInvalid_ShouldReturnErrorMessage()
+        {
+            //Arrange
+            var itemGatewayMock = new Mock<IItemGateway>();
+            itemGatewayMock.Setup(g => g.GetItemList()).Returns(new List<Item>());
+            var itemService = new ItemService(itemGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture("C:\\");
+
+            //Act
+            var result = itemService.ReadItemsFromFile();
+
+            //Asset
+            Assert.Equal("Access to the path 'C:\\' is denied.", result);
+            itemGatewayMock.Verify(r => r.PostItem(It.IsAny<Item>()), Times.Never);
+        }
+
+        [Fact]
+        public void ReadItemsFile_WhenPathIsNotInformed_ShouldReturnErrorMessage()
+        {
+            //Arrange
+            var itemGatewayMock = new Mock<IItemGateway>();
+            itemGatewayMock.Setup(g => g.GetItemList()).Returns(new List<Item>());
+            var itemService = new ItemService(itemGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture("");
+
+            //Act
+            var result = itemService.ReadItemsFromFile();
+
+            //Asset
+            Assert.Equal("Informe the path needed", result);
+            itemGatewayMock.Verify(r => r.PostItem(It.IsAny<Item>()), Times.Never);
         }
 
         private class ConsoleOutputCapture : IDisposable

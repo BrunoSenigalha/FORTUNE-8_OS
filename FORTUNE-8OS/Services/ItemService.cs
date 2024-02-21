@@ -89,6 +89,40 @@ namespace FORTUNE_8OS.Services
             return "Item not found";
         }
 
+        public string ReadItemsFromFile()
+        {
+            Console.WriteLine("Enter the directory path.");
+            string? path = Console.ReadLine();
+
+            if (path != null)
+            {
+                var listOfItemsFromDatabase = _itemGateway.GetItemList();
+                try
+                {
+                    string[] lines = File.ReadAllLines(path);
+                    foreach (string line in lines)
+                    {
+                        string[] data = line.Split(',');
+                        string itemName = data[0];
+                        var itemExists = listOfItemsFromDatabase.Where(x => x.Name.Equals(itemName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+
+                        if (itemExists == null && decimal.TryParse(data[1], out decimal itemCredits))
+                        {
+                            Item item = new(itemName, itemCredits);
+                            _itemGateway.PostItem(item);
+                            itemExists = null;
+                        }
+                    }
+                    return "Items were read successfully";
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+            }
+            return "Informe the path needed";
+        }
+
         private Item? FindItemFromDatabase()
         {
             string? itemName = Console.ReadLine();
