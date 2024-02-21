@@ -89,9 +89,6 @@ do
 
 void ProductServicesMenu()
 {
-    ItemGateway itemGateway = new ItemGateway();
-    ItemService itemService = new(itemGateway);
-
     Console.WriteLine(">POST NEW PRODUCT");
     Console.WriteLine("To post a new product\n");
 
@@ -110,19 +107,12 @@ void ProductServicesMenu()
     switch (choice)
     {
         case "POST NEW PRODUCT":
-            var item = itemService.CreateNewItemObject();
-            Console.WriteLine(itemService.PostItem(item));
+
 
             break;
 
         case "LIST PRODUCTS":
-            var items = itemService.GetItems();
-            Console.WriteLine();
-            foreach (var data in items)
-            {
-                Console.WriteLine(data.ToString());
-            }
-            Console.WriteLine();
+
 
             break;
 
@@ -137,14 +127,24 @@ void ProductServicesMenu()
 
 void ItemServicesMenu()
 {
+    ItemGateway itemGateway = new ItemGateway();
+    ItemService itemService = new(itemGateway);
+    string message;
+
     Console.WriteLine(">POST NEW ITEM");
     Console.WriteLine("To post a new item\n");
+
+    Console.WriteLine(">READ ITEMS FROM FILE");
+    Console.WriteLine("To read items from file\n");
 
     Console.WriteLine(">LIST ITEMS");
     Console.WriteLine("To list all items\n");
 
     Console.WriteLine(">UPDATE ITEM");
-    Console.WriteLine("To update item name or credits\n");
+    Console.WriteLine("To update a target item\n");
+
+    Console.WriteLine(">DELETE ITEM");
+    Console.WriteLine("To delete a target item \n");
 
     Console.WriteLine(">BACK");
     Console.WriteLine("To back to main menu\n");
@@ -155,13 +155,35 @@ void ItemServicesMenu()
     {
         case "POST NEW ITEM":
             Console.Clear();
+            var item = itemService.CreateNewItemObject();
+            Console.WriteLine(itemService.PostItem(item));
+            break;
 
+        case "READ ITEMS FROM FILE":
+            Console.Clear();
             break;
 
         case "LIST ITEMS":
+            Console.Clear();
+            var items = itemService.GetItems();
+            Console.WriteLine();
+            foreach (var data in items)
+            {
+                Console.WriteLine(data.ToString());
+            }
+            Console.WriteLine();
             break;
 
         case "UPDATE ITEM":
+            Console.Clear();
+            message = itemService.UpdateItem();
+            Console.WriteLine(message);
+            break;
+
+        case "DELETE ITEM":
+            Console.Clear();
+            message = itemService.DeleteItem();
+            Console.WriteLine(message);
             break;
 
         default:

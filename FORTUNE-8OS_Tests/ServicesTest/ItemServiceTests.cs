@@ -2,6 +2,7 @@
 using FORTUNE_8OS.Exceptions;
 using FORTUNE_8OS.Interfaces;
 using FORTUNE_8OS.Services;
+using Microsoft.VisualBasic.FileIO;
 using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Moq;
 using System;
@@ -144,6 +145,113 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             itemGatewayMock.Verify(g => g.UpdateItem(It.IsAny<Item>()), Times.Once);
 
         }
+
+        [Theory]
+        [InlineData("ValidValue", "DENY")]
+        [InlineData("ValidValue", "AnotherValue")]
+        [InlineData("ValidValue", "")]
+
+        public void UpdateItemFromDatabase_WhenValidNameAndDenyOrAnotherValue_ShouldReturnDeniedMessage(string inputName, string option)
+        {
+            //Arrange
+            var itemGatewayMock = new Mock<IItemGateway>();
+            itemGatewayMock.Setup(g => g.GetItemList()).Returns(new List<Item> { new Item(1, "ValidValue", 10.5M) });
+            var itemService = new ItemService(itemGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture(inputName, option);
+
+            //Act
+            var result = itemService.UpdateItem();
+
+            //Assert
+            Assert.Equal("You denied the change", result);
+            itemGatewayMock.Verify(g => g.UpdateItem(It.IsAny<Item>()), Times.Never);
+        }
+
+        [Theory]
+        [InlineData("InvalidName")]
+        [InlineData("")]
+        public void UpdateItemFromDatabase_WhenInvalidName_ShouldReturnNotFoundMessage(string inputName)
+        {
+            //Arrange
+            var itemGatewayMock = new Mock<IItemGateway>();
+            itemGatewayMock.Setup(g => g.GetItemList()).Returns(new List<Item> { new Item(1, "ValidValue", 10.5M) });
+            var itemService = new ItemService(itemGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture(inputName);
+
+            //Act
+            var result = itemService.UpdateItem();
+
+            //Assert
+            Assert.Equal("Item not found", result);
+            itemGatewayMock.Verify(g => g.UpdateItem(It.IsAny<Item>()), Times.Never);
+        }
+
+        [Fact]
+        public void DeleteItemFromDatabase_WhenValidNameAndConfirm_ShouldReturnConfirmationMessage()
+        {
+            //Arrange
+            var itemGatewayMock = new Mock<IItemGateway>();
+            itemGatewayMock.Setup(g => g.GetItemList()).Returns(new List<Item> { new Item(1, "ValidValue", 10.5M) });
+            var itemService = new ItemService(itemGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture("ValidValue", "CONFIRM");
+
+            //Act
+            var result = itemService.DeleteItem();
+
+            //Assert
+            Assert.Equal("Item ValidValue deleted", result);
+            itemGatewayMock.Verify(d => d.DeleteItem(It.IsAny<int>()), Times.Once);
+        }
+
+        [Theory]
+        [InlineData("ValidValue", "DENY")]
+        [InlineData("ValidValue", "AnotherOption")]
+        [InlineData("ValidValue", "")]
+        public void DeleteItemFromDatabase_WhenValidNameAndDeny_ShouldReturnDeniedMessage(string inputName, string option)
+        {
+            //Arrange
+            var itemGatewayMock = new Mock<IItemGateway>();
+            itemGatewayMock.Setup(g => g.GetItemList()).Returns(new List<Item> { new Item(1, "ValidValue", 10.5M) });
+            var itemService = new ItemService(itemGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture(inputName, option);
+
+            //Act
+            var result = itemService.DeleteItem();
+
+            //Assert
+            Assert.Equal("You denied the delectation", result);
+            itemGatewayMock.Verify(d => d.DeleteItem(It.IsAny<int>()), Times.Never);
+        }
+
+        [Theory]
+        [InlineData("InvalidValue")]
+        [InlineData("")]
+        public void DeleteItemFromDatabase_WhenInvalidName_ShouldReturnNotFoundMessage(string inputName)
+        {
+            //Arrange
+            var itemGatewayMock = new Mock<IItemGateway>();
+            itemGatewayMock.Setup(g => g.GetItemList()).Returns(new List<Item> { new Item(1, "ValidValue", 10.5M) });
+            var itemService = new ItemService(itemGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture(inputName);
+
+            //Act
+            var result = itemService.DeleteItem();
+
+            //Assert
+            Assert.Equal("Item not found", result);
+            itemGatewayMock.Verify(d => d.DeleteItem(It.IsAny<int>()), Times.Never);
+        }
+
         private class ConsoleOutputCapture : IDisposable
         {
             private readonly System.IO.StringWriter stringWriter;

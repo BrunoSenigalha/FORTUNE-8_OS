@@ -48,5 +48,17 @@ namespace FORTUNE_8OS.Gateways
                 connection.Execute(query, item);
             }
         }
+
+        public void DeleteItem(int id)
+        {
+            using (SqlConnection connection = new(ConnectionDatabase.ConnectionString()))
+            {
+                connection.Open();
+
+                string query = "DELETE Items WHERE Id = @id";
+                connection.Execute(query, id);
+            }
+            throw new NotImplementedException();
+        }
     }
 }

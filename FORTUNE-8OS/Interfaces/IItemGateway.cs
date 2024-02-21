@@ -11,7 +11,7 @@ namespace FORTUNE_8OS.Interfaces
     {
         public void PostItem(Item item);
         public IEnumerable<Item> GetItemList();
-
         void UpdateItem(Item item);
+        void DeleteItem(int id);
     }
 }
