@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using FORTUNE_8OS.Entities;
 using FORTUNE_8OS.Interfaces;
+using FORTUNE_8OS.Services;
 using FORTUNE_8OS.Utilitaries;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace FORTUNE_8OS.Gateways
 {
     public class ItemGateway : IItemGateway
     {
+        internal ItemService _itemService;
+
         public void PostItem(Item item)
         {
             using (SqlConnection connection = new(ConnectionDatabase.ConnectionString()))
@@ -49,16 +52,15 @@ namespace FORTUNE_8OS.Gateways
             }
         }
 
-        public void DeleteItem(int id)
+        public void DeleteItem(Item item)
         {
             using (SqlConnection connection = new(ConnectionDatabase.ConnectionString()))
             {
                 connection.Open();
 
-                string query = "DELETE Items WHERE Id = @id";
-                connection.Execute(query, id);
+                string query = "DELETE Items WHERE Id = @Id";
+                connection.Execute(query, item);
             }
-            throw new NotImplementedException();
         }
     }
 }

@@ -108,11 +108,9 @@ void ProductServicesMenu()
     {
         case "POST NEW PRODUCT":
 
-
             break;
 
         case "LIST PRODUCTS":
-
 
             break;
 
@@ -149,8 +147,8 @@ void ItemServicesMenu()
     Console.WriteLine(">BACK");
     Console.WriteLine("To back to main menu\n");
 
-    string choice;
-    choice = Console.ReadLine().ToUpper();
+    
+    string? choice = Console.ReadLine().ToUpper();
     switch (choice)
     {
         case "POST NEW ITEM":

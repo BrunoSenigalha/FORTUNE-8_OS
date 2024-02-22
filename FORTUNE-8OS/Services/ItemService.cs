@@ -43,7 +43,8 @@ namespace FORTUNE_8OS.Services
         public string UpdateItem()
         {
             Console.WriteLine("Type the name of item you would like to update: ");
-            var itemFromDatabase = FindItemFromDatabase();
+            string? itemName = Console.ReadLine();
+            var itemFromDatabase = FindItemFromDatabase(itemName);
 
             if (itemFromDatabase != null)
             {
@@ -54,7 +55,7 @@ namespace FORTUNE_8OS.Services
                 if (option is not null && option.ToUpper() == "CONFIRM")
                 {
                     Console.WriteLine("Type a new name of item: ");
-                    string? itemName = Console.ReadLine();
+                    itemName = Console.ReadLine();
                     Console.WriteLine("Type a new credits value: ");
                     decimal credits = _validateDecimalInput.ValidateCredits();
 
@@ -71,7 +72,8 @@ namespace FORTUNE_8OS.Services
         public string DeleteItem()
         {
             Console.WriteLine("Type the name of item you would like to delete: ");
-            var itemFromDatabase = FindItemFromDatabase();
+            string? itemName = Console.ReadLine();
+            var itemFromDatabase = FindItemFromDatabase(itemName);
 
             if (itemFromDatabase != null)
             {
@@ -81,7 +83,7 @@ namespace FORTUNE_8OS.Services
 
                 if (option is not null && option.ToUpper() == "CONFIRM")
                 {
-                    _itemGateway.DeleteItem(itemFromDatabase.Id);
+                    _itemGateway.DeleteItem(itemFromDatabase);
                     return $"Item {itemFromDatabase.Name} deleted";
                 }
                 return "You denied the delectation";
@@ -123,13 +125,17 @@ namespace FORTUNE_8OS.Services
             return "Informe the path needed";
         }
 
-        private Item? FindItemFromDatabase()
+        public Item? FindItemFromDatabase(string itemName)
         {
-            string? itemName = Console.ReadLine();
             var items = GetItems();
             var itemFromDatabase = items.Where(p => p.Name.Equals(itemName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
 
             return itemFromDatabase;
         }
+
+        //public IEnumerable<Item> GetItems()
+        //{
+        //    return _itemService.GetItemList();
+        //}
     }
 }

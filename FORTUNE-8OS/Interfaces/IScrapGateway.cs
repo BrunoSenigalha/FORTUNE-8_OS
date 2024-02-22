@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace FORTUNE_8OS.Interfaces
 {
-    public interface IItemGateway
+    public interface IScrapGateway
     {
-        public void PostItem(Item item);
-        public IEnumerable<Item> GetItemList();
-        void UpdateItem(Item item);
-        void DeleteItem(Item item);
+        void PostScrap(Scrap scrap);
+        IEnumerable<Scrap> GetScraps();
+
     }
 }

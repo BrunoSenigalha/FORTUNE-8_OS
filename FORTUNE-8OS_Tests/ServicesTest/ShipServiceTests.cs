@@ -25,7 +25,6 @@ namespace FORTUNE_8OS_Tests.ServicesTest
         }
 
         [Fact]
-
         public void CreateShip_WhenShipExists_ShouldNotCreateShip()
         {
             // Arrange

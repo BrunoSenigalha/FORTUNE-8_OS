@@ -25,5 +25,15 @@ namespace FORTUNE_8OS.Entities
         public string Name { get; private set; }
         public decimal Credits { get; set; }
 
+        public void AddCredits(decimal credits)
+        {
+            Credits += credits;
+        }
+
+        public void RemoveCredits(decimal credits)
+        {
+            Credits -= credits;
+        }
+        
     }
 }

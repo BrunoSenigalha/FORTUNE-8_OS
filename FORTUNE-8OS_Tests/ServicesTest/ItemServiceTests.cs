@@ -2,19 +2,15 @@
 using FORTUNE_8OS.Exceptions;
 using FORTUNE_8OS.Interfaces;
 using FORTUNE_8OS.Services;
-using Microsoft.VisualBasic.FileIO;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
+using FORTUNE_8OS_Tests.Utilitaries;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static FORTUNE_8OS_Tests.ServicesTest.ScrapServiceTest;
 
 namespace FORTUNE_8OS_Tests.ServicesTest
 {
     public class ItemServiceTests
     {
+        
         [Fact]
         public void GetItems_WhenDoesNotExist_ShoulReturnNull()
         {
@@ -146,6 +142,8 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             //Assert
             Assert.Equal("Item NewValidName updated successfully", result);
             itemGatewayMock.Verify(g => g.UpdateItem(It.IsAny<Item>()), Times.Once);
+            consoleOutputCapture.Dispose();
+            consoleInputCapture.Dispose();
 
         }
 
@@ -170,6 +168,8 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             //Assert
             Assert.Equal("You denied the change", result);
             itemGatewayMock.Verify(g => g.UpdateItem(It.IsAny<Item>()), Times.Never);
+            consoleOutputCapture.Dispose();
+            consoleInputCapture.Dispose();
         }
 
         [Theory]
@@ -191,6 +191,8 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             //Assert
             Assert.Equal("Item not found", result);
             itemGatewayMock.Verify(g => g.UpdateItem(It.IsAny<Item>()), Times.Never);
+            consoleOutputCapture.Dispose();
+            consoleInputCapture.Dispose();
         }
 
         [Theory]
@@ -212,7 +214,9 @@ namespace FORTUNE_8OS_Tests.ServicesTest
 
             //Assert
             Assert.Equal("Item ValidValue deleted", result);
-            itemGatewayMock.Verify(d => d.DeleteItem(It.IsAny<int>()), Times.Once);
+            itemGatewayMock.Verify(d => d.DeleteItem(It.IsAny<Item>()), Times.Once);
+            consoleOutputCapture.Dispose();
+            consoleInputCapture.Dispose();
         }
 
         [Theory]
@@ -234,7 +238,9 @@ namespace FORTUNE_8OS_Tests.ServicesTest
 
             //Assert
             Assert.Equal("You denied the delectation", result);
-            itemGatewayMock.Verify(d => d.DeleteItem(It.IsAny<int>()), Times.Never);
+            itemGatewayMock.Verify(d => d.DeleteItem(It.IsAny<Item>()), Times.Never);
+            consoleOutputCapture.Dispose();
+            consoleInputCapture.Dispose();
         }
 
         [Theory]
@@ -255,7 +261,9 @@ namespace FORTUNE_8OS_Tests.ServicesTest
 
             //Assert
             Assert.Equal("Item not found", result);
-            itemGatewayMock.Verify(d => d.DeleteItem(It.IsAny<int>()), Times.Never);
+            itemGatewayMock.Verify(d => d.DeleteItem(It.IsAny<Item>()), Times.Never);
+            consoleOutputCapture.Dispose();
+            consoleInputCapture.Dispose();
         }
 
         [Fact]
@@ -275,6 +283,8 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             //Asset
             Assert.Equal("Items were read successfully", result);
             itemGatewayMock.Verify(r => r.PostItem(It.IsAny<Item>()), Times.Exactly(4));
+            consoleOutputCapture.Dispose();
+            consoleInputCapture.Dispose();
         }
 
         [Theory]
@@ -296,6 +306,8 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             //Asset
             Assert.Equal("Items were read successfully", result);
             itemGatewayMock.Verify(r => r.PostItem(It.IsAny<Item>()), Times.Exactly(3));
+            consoleOutputCapture.Dispose();
+            consoleInputCapture.Dispose();
         }
 
         [Fact]
@@ -315,6 +327,8 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             //Asset
             Assert.Equal("Access to the path 'C:\\' is denied.", result);
             itemGatewayMock.Verify(r => r.PostItem(It.IsAny<Item>()), Times.Never);
+            consoleOutputCapture.Dispose();
+            consoleInputCapture.Dispose();
         }
 
         [Fact]
@@ -334,45 +348,13 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             //Asset
             Assert.Equal("Informe the path needed", result);
             itemGatewayMock.Verify(r => r.PostItem(It.IsAny<Item>()), Times.Never);
+            consoleOutputCapture.Dispose();
+            consoleInputCapture.Dispose();
         }
 
-        private class ConsoleOutputCapture : IDisposable
-        {
-            private readonly System.IO.StringWriter stringWriter;
-            private readonly System.IO.TextWriter originalOutput;
+        
 
-            public ConsoleOutputCapture()
-            {
-                stringWriter = new System.IO.StringWriter();
-                originalOutput = Console.Out;
-                Console.SetOut(stringWriter);
-            }
-
-            public void Dispose()
-            {
-                Console.SetOut(originalOutput);
-                stringWriter.Dispose();
-            }
-        }
-
-        private class ConsoleInputCapture : IDisposable
-        {
-            private readonly System.IO.StringReader stringReader;
-            private readonly System.IO.TextReader originalInput;
-
-            public ConsoleInputCapture(params string[] inputLines)
-            {
-                stringReader = new System.IO.StringReader(string.Join(Environment.NewLine, inputLines));
-                originalInput = Console.In;
-                Console.SetIn(stringReader);
-            }
-
-            public void Dispose()
-            {
-                Console.SetIn(originalInput);
-                stringReader.Dispose();
-            }
-        }
+        
 
     }
 }

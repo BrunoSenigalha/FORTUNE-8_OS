@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FORTUNE-8OS_Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ff292d27f230ea678a1ddc59b67c8eb8d8c34561")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+30bc14a690c94d233e457ef7125b2027b2e69af0")]
 [assembly: System.Reflection.AssemblyProductAttribute("FORTUNE-8OS_Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FORTUNE-8OS_Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
