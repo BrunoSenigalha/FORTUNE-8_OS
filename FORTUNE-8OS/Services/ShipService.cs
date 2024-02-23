@@ -30,6 +30,11 @@ namespace FORTUNE_8OS.Services
             return ship;
         }
 
+        public void UpdateShip(Ship ship)
+        {
+            _shipGateway?.UpdateShip(ship);
+        }
+
         public string PrintShipCredits()
         {
             var ship = GetShip();

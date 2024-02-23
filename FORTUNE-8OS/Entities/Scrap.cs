@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FORTUNE_8OS.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,23 +9,25 @@ namespace FORTUNE_8OS.Entities
 {
     public class Scrap
     {
-        public Scrap(int idItem, int quantity, DateTime scrapDate, decimal credits, Item item)
+        public Scrap(int quantity, DateTime scrapDate, decimal credits, Item item)
         {
-            IdItem = idItem;
+            DomainExceptionValidation.When(quantity <= 0, "The field quantity can't be lass than or equal zero");
+            DomainExceptionValidation.When(credits < 0, "The field credits can't be less than zero.");
+
+            IdItem = item.Id;
             Quantity = quantity;
             ScrapDate = scrapDate;
             Credits = credits;
             Item = item;
         }
 
-        public Scrap(int id, int idItem, int quantity, DateTime scrapDate, decimal credits, Item item)
+        public Scrap(int id, int idItem, int quantity, DateTime scrapDate, decimal credits)
         {
             Id = id;
             IdItem = idItem;
             Quantity = quantity;
             ScrapDate = scrapDate;
             Credits = credits;
-            Item = item;
         }
 
         public int Id { get; set; }

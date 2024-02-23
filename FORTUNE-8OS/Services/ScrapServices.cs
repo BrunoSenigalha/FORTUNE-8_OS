@@ -1,24 +1,21 @@
 ﻿using FORTUNE_8OS.Entities;
-using FORTUNE_8OS.Gateways;
 using FORTUNE_8OS.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FORTUNE_8OS.Services
 {
     public class ScrapServices
     {
         private readonly IScrapGateway _scrapGateway;
-        private readonly ItemGateway _itemGateway;
+        private readonly IItemGateway _itemGateway;
+        private readonly IShipGateway _shipGateway;
         private readonly ItemService _itemService;
-        private readonly ShipGateway _shipGateway;
         private readonly ShipService _shipService;
-        public ScrapServices(IScrapGateway scrapGateway)
+
+        public ScrapServices(IScrapGateway scrapGateway, IItemGateway itemGateway, IShipGateway shipGateway)
         {
             _scrapGateway = scrapGateway;
+            _itemGateway = itemGateway;
+            _shipGateway = shipGateway;
             _itemService = new ItemService(_itemGateway);
             _shipService = new ShipService(_shipGateway);
         }
@@ -28,19 +25,20 @@ namespace FORTUNE_8OS.Services
             Console.WriteLine("Follow the list of Items for Scrap: \n");
             ItemsListForScrap();
 
-            string? option;
+            //bool finish = false;
+            string option;
             decimal totalPayment = 0;
             do
             {
                 Console.WriteLine("Enter the name of the item and the quantity for scrap");
-                string? scrapItemData = Console.ReadLine();
+                string scrapItemData = Console.ReadLine();
 
                 (string messageReturn, decimal payment) = PostScrapItems(scrapItemData);
                 totalPayment += payment;
                 Console.WriteLine(messageReturn);
 
                 Console.WriteLine("Would you like to scrap another item?");
-                option = Console.ReadLine();
+                option = Console.ReadLine().ToUpper();
 
             } while (option != "NO");
 
@@ -52,12 +50,12 @@ namespace FORTUNE_8OS.Services
             var items = _itemService.GetItems();
             foreach (var item in items)
             {
-                Console.WriteLine($"{item.Name} \\ {item.Id}");
+                Console.WriteLine($"{item.Name} \\ {item.Credits}");
             }
             Console.WriteLine();
         }
 
-        private (string, decimal) PostScrapItems(string scrapItemData)
+        public (string, decimal) PostScrapItems(string scrapItemData)
         {
             string[] strings = scrapItemData.Split(" ");
             int vetLenght = strings.Length - 1;
@@ -70,27 +68,39 @@ namespace FORTUNE_8OS.Services
                     itemName += strings[i] + " ";
                 }
 
-                var itemsFromDatabase = _itemService.GetItems();
+                var itemsFromDatabase = _itemGateway.GetItemList();
                 var itemForScrap = itemsFromDatabase.Where(p => p.Name.Equals(itemName.TrimEnd(), StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
                 if (itemForScrap != null)
                 {
                     decimal payment = ProcessPaymentForScrap(quantity, itemForScrap.Credits);
-                    Scrap scrap = new(itemForScrap.Id, quantity, DateTime.Now, payment, itemForScrap);
+                    Scrap scrap = new(quantity, DateTime.Now, payment, itemForScrap);
                     _scrapGateway.PostScrap(scrap);
-                    return ("Successfully scraped", payment);
+                    return ("Successfully scraped!\n", payment);
                 }
-                return ("Item not found", 0);
+                return ("Item not found!\n", 0);
             }
-            return ("Wrong value informed", 0);
+            return ("Wrong value informed!\n", 0);
         }
 
-        private decimal ProcessPaymentForScrap(int quantity, decimal credits)
+        public decimal ProcessPaymentForScrap(int quantity, decimal credits)
         {
             decimal payment = quantity * credits;
             var ship = _shipService.GetShip();
-            ship.AddCredits(payment);
-
+            if (ship != null)
+            {
+                ship?.AddCredits(payment);
+                _shipService.UpdateShip(ship);
+            }
             return payment;
+        }
+
+        public void GetScrapHistoric()
+        {
+            var scraps = _scrapGateway.GetScraps();
+            foreach (var scrap in scraps)
+            {
+                Console.WriteLine($"{scrap.ScrapDate:MM/dd/yyyy HH:mm} -- {scrap.Item.Name} {scrap.Quantity}  \\{scrap.Credits:F2} ");
+            }
         }
     }
 }

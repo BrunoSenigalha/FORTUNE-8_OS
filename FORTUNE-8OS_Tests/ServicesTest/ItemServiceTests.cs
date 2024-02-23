@@ -351,10 +351,5 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             consoleOutputCapture.Dispose();
             consoleInputCapture.Dispose();
         }
-
-        
-
-        
-
     }
 }

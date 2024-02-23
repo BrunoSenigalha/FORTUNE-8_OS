@@ -31,16 +31,17 @@ namespace FORTUNE_8OS.Gateways
             {
                 connection.Open();
 
-                string query = @"SELECT s.*, i.* FROM Scraps s JOIN Items i ON s.IdItem = i.Id";
+                string query = @"SELECT s.*, i.* FROM Scrap s JOIN Items i ON s.IdItem = i.Id";
                 var result = connection.Query<Scrap, Item, Scrap>(
                     query,
-                    (scrap, item) =>
+                    (scrap,item) =>
                     {
                         scrap.Item = item;
                         return scrap;
                     },
                     splitOn: "Id"
                     ).ToList();
+
                 return result;
             }
         }

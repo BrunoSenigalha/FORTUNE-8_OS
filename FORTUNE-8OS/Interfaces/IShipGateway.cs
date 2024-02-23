@@ -11,5 +11,7 @@ namespace FORTUNE_8OS.Interfaces
     {
         void PostShipDatabase(Ship ship);
         IEnumerable<Ship> GetShipList();
+
+        void UpdateShip(Ship ship);
     }
 }

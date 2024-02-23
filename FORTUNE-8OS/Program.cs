@@ -6,6 +6,12 @@ ShipGateway shipGateway = new();
 ShipService shipService = new(shipGateway);
 shipService.CreateShip();
 
+ItemGateway itemGateway = new();
+ItemService itemService = new(itemGateway);
+ScrapGateway scrapGateway = new();
+ScrapServices scrapServices = new(scrapGateway, itemGateway, shipGateway);
+string message;
+
 Console.Clear();
 Console.ForegroundColor = ConsoleColor.Green;
 
@@ -28,6 +34,7 @@ do
 
     switch (choice)
     {
+
         case "HELP":
             Console.Clear();
             Console.WriteLine($"{shipService.PrintShipCredits()}\n");
@@ -69,10 +76,13 @@ do
 
         case "SCRAP ITEMS":
             Console.Clear();
+            message = scrapServices.ImputScrapInfo();
+            Console.WriteLine(message);
             break;
 
         case "SCRAP HISTORIC":
             Console.Clear();
+            scrapServices.GetScrapHistoric();
             break;
 
         case "EXIT":
@@ -89,6 +99,8 @@ do
 
 void ProductServicesMenu()
 {
+    string message;
+
     Console.WriteLine(">POST NEW PRODUCT");
     Console.WriteLine("To post a new product\n");
 
@@ -117,6 +129,10 @@ void ProductServicesMenu()
         case "UPDATE PRODUCT":
             break;
 
+        case "BACK":
+            Console.WriteLine();
+            break;
+
         default:
             Console.WriteLine($"Unknow Command \"{choice}\"");
             break;
@@ -125,8 +141,6 @@ void ProductServicesMenu()
 
 void ItemServicesMenu()
 {
-    ItemGateway itemGateway = new ItemGateway();
-    ItemService itemService = new(itemGateway);
     string message;
 
     Console.WriteLine(">POST NEW ITEM");
@@ -147,7 +161,7 @@ void ItemServicesMenu()
     Console.WriteLine(">BACK");
     Console.WriteLine("To back to main menu\n");
 
-    
+
     string? choice = Console.ReadLine().ToUpper();
     switch (choice)
     {
@@ -184,6 +198,10 @@ void ItemServicesMenu()
             Console.Clear();
             message = itemService.DeleteItem();
             Console.WriteLine(message);
+            break;
+
+        case "BACK":
+            Console.WriteLine();
             break;
 
         default:
