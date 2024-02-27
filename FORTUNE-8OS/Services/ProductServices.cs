@@ -1,12 +1,7 @@
 ﻿using FORTUNE_8OS.Entities;
 using FORTUNE_8OS.Entities.Enums;
-using FORTUNE_8OS.Gateways;
 using FORTUNE_8OS.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace FORTUNE_8OS.Services
 {
@@ -92,6 +87,25 @@ namespace FORTUNE_8OS.Services
             {
                 return $"Argument error: {ex.Message}";
             }
+        }
+
+       public string DeleteProduct()
+        {
+            Console.WriteLine("Type the product name");
+            string? productName = Console.ReadLine();
+
+            if (productName is null)
+            {
+                return "The name of the product was not informed";
+            }
+            var product = FindProduct(productName);
+
+            if (product is null)
+            {
+                return $"Product not found";
+            }
+            _productGateway.DeleteProduct(product);
+            return $"Product {productName.Trim()}";
         }
     }
 }

@@ -111,9 +111,6 @@ void ProductServicesMenu()
     Console.WriteLine(">UPDATE PRODUCT QUANTITY");
     Console.WriteLine("To update product quantity available\n");
 
-    Console.WriteLine(">UPDATE PRODUCT");
-    Console.WriteLine("To update product information\n");
-
     Console.WriteLine(">DELETE PRODUCT");
     Console.WriteLine("To delete product");
 
@@ -142,15 +139,19 @@ void ProductServicesMenu()
             break;
 
         case "UPDATE PRODUCT QUANTITY":
-            break;
-
-        case "UPDATE PRODUCT":
+            Console.Clear();
+            message = productServices.UpdateProductQuantity();
+            Console.WriteLine(message);
             break;
 
         case "DELETE PRODUCT":
+            Console.Clear();
+            message = productServices.DeleteProduct();
+            Console.WriteLine(message);
             break;
 
         case "BACK":
+            Console.Clear();
             Console.WriteLine();
             break;
 
@@ -222,6 +223,7 @@ void ItemServicesMenu()
             break;
 
         case "BACK":
+            Console.Clear();
             Console.WriteLine();
             break;
 

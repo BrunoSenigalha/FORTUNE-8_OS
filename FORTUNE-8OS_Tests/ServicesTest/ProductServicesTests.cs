@@ -366,5 +366,82 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             consoleInputCapture.Dispose();
             consoleOutputCapture.Dispose();
         }
+
+        [Theory]
+        [InlineData("Valid Product")]
+        [InlineData("  Valid Product ")]
+        public void DeleteProduct_WhenInputValidName_ShouldReturnPositiveMessage(string inputName)
+        {
+            //Arrange
+            var productGatewayMock = new Mock<IProductGateway>();
+            var product1 = new Product(1, "Valid Product", "Valid Product Description", 20, 15.5M, 0);
+
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { product1 });
+            var productServices = new ProductServices(productGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture(inputName);
+
+            //Act
+            var result = productServices.DeleteProduct();
+
+            //Assert
+            Assert.Equal($"Product {product1.Name}", result);
+            productGatewayMock.Verify(p => p.DeleteProduct(It.IsAny<Product>()), Times.Once);
+            consoleInputCapture.Dispose();
+            consoleOutputCapture.Dispose();
+        }
+
+        [Theory]
+        [InlineData("Invalid Value")]
+        [InlineData("15")]
+        [InlineData(" ")]
+        public void DeleteProduct_WhenInputInvalidValue_ShouldReturnNotFound(string inputName)
+        {
+            //Arrange
+            var productGatewayMock = new Mock<IProductGateway>();
+            var product1 = new Product(1, "Valid Product", "Valid Product Description", 20, 15.5M, 0);
+            var product2 = new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0);
+
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { product1, product2 });
+            var productServices = new ProductServices(productGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture(inputName);
+
+            //Act
+            var result = productServices.DeleteProduct();
+
+            //Assert
+            Assert.Equal($"Product not found", result);
+            productGatewayMock.Verify(p => p.DeleteProduct(It.IsAny<Product>()), Times.Never);
+            consoleInputCapture.Dispose();
+            consoleOutputCapture.Dispose();
+        }
+
+        [Theory]
+        [InlineData("")]
+        public void DeleteProduct_WhenInputNullValue_ShouldReturnNameNotInformedMessage(string inputName)
+        {
+            //Arrange
+            var productGatewayMock = new Mock<IProductGateway>();
+            var product1 = new Product(1, "Valid Product", "Valid Product Description", 20, 15.5M, 0);
+            var product2 = new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0);
+
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { product1, product2 });
+            var productServices = new ProductServices(productGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture(inputName);
+
+            //Act
+            var result = productServices.DeleteProduct();
+
+            //Assert
+            Assert.Equal($"The name of the product was not informed", result);
+            productGatewayMock.Verify(p => p.DeleteProduct(It.IsAny<Product>()), Times.Never);
+            consoleInputCapture.Dispose();
+            consoleOutputCapture.Dispose();
+        }
     }
 }
