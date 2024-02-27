@@ -1,14 +1,34 @@
 ﻿using FORTUNE_8OS.Entities.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FORTUNE_8OS.Exceptions;
 
 namespace FORTUNE_8OS.Entities
 {
     public class Product
     {
+        public Product(string name, string description, int quantity, decimal price, CategoryEnum category)
+        {
+            DomainExceptionValidation.When(string.IsNullOrEmpty(name), "The field name can't be empty.");
+            DomainExceptionValidation.When(name.Length < 3, "The name must have a minimum of three characters.");
+            DomainExceptionValidation.When(string.IsNullOrEmpty(description), "The field description can't be empty.");
+            DomainExceptionValidation.When(quantity <= 0, "The quantity can't be lass than or equal to 0");
+            DomainExceptionValidation.When(price <= 0, "The quantity can't be lass than or equal to 0");
+           
+            Name = name;
+            Description = description;
+            Quantity = quantity;
+            Price = price;
+            Category = category;
+        }
+
+        public Product(int id, string name, string description, int quantity, decimal price, CategoryEnum category)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            Quantity = quantity;
+            Price = price;
+            Category = category;
+        }
 
         public int Id { get; }
         public string Name { get; set; }

@@ -9,8 +9,8 @@ namespace FORTUNE_8OS.Interfaces
 {
     public interface IItemGateway
     {
-        public void PostItem(Item item);
-        public IEnumerable<Item> GetItemList();
+        void PostItem(Item item);
+        IEnumerable<Item> GetItemList();
         void UpdateItem(Item item);
         void DeleteItem(Item item);
     }

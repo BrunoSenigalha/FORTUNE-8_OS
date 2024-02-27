@@ -10,6 +10,8 @@ ItemGateway itemGateway = new();
 ItemService itemService = new(itemGateway);
 ScrapGateway scrapGateway = new();
 ScrapServices scrapServices = new(scrapGateway, itemGateway, shipGateway);
+ProductGateway productGateway = new();
+ProductServices productServices = new(productGateway);
 string message;
 
 Console.Clear();
@@ -61,7 +63,6 @@ do
         case "STORE":
             Console.Clear();
             Console.WriteLine("This is a Store");
-
             break;
 
         case "PRODUCT SERVICES":
@@ -107,8 +108,14 @@ void ProductServicesMenu()
     Console.WriteLine(">LIST PRODUCTS");
     Console.WriteLine("To list all products\n");
 
+    Console.WriteLine(">UPDATE PRODUCT QUANTITY");
+    Console.WriteLine("To update product quantity available\n");
+
     Console.WriteLine(">UPDATE PRODUCT");
-    Console.WriteLine("To update product name or credits\n");
+    Console.WriteLine("To update product information\n");
+
+    Console.WriteLine(">DELETE PRODUCT");
+    Console.WriteLine("To delete product");
 
     Console.WriteLine(">BACK");
     Console.WriteLine("To back to main menu\n");
@@ -119,14 +126,28 @@ void ProductServicesMenu()
     switch (choice)
     {
         case "POST NEW PRODUCT":
-
+            Console.Clear();
+            message = productServices.CreateNewProduct();
+            Console.WriteLine(message);
             break;
 
         case "LIST PRODUCTS":
+            Console.Clear();
+            var products = productServices.GetProducts();
+            foreach (var product in products)
+            {
+                Console.WriteLine($"{product.Name} -- Quantity:{product.Quantity} -- \\{product.Price} -- {product.Category}");
+            }
+            Console.WriteLine();
+            break;
 
+        case "UPDATE PRODUCT QUANTITY":
             break;
 
         case "UPDATE PRODUCT":
+            break;
+
+        case "DELETE PRODUCT":
             break;
 
         case "BACK":
