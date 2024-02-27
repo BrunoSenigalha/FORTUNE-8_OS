@@ -1,5 +1,6 @@
 ﻿using FORTUNE_8OS.Entities.Enums;
 using FORTUNE_8OS.Exceptions;
+using System.Xml.Linq;
 
 namespace FORTUNE_8OS.Entities
 {
@@ -12,7 +13,7 @@ namespace FORTUNE_8OS.Entities
             DomainExceptionValidation.When(string.IsNullOrEmpty(description), "The field description can't be empty.");
             DomainExceptionValidation.When(quantity <= 0, "The quantity can't be lass than or equal to 0");
             DomainExceptionValidation.When(price <= 0, "The quantity can't be lass than or equal to 0");
-           
+
             Name = name;
             Description = description;
             Quantity = quantity;
@@ -36,5 +37,11 @@ namespace FORTUNE_8OS.Entities
         public int Quantity { get; set; }
         public decimal Price { get; set; }
         public CategoryEnum Category { get; set; }
+
+        public void UpdateQuantity(int quantity)
+        {
+            DomainExceptionValidation.When(quantity < 0, "The quantity can't be less than 0");
+            this.Quantity += quantity;
+        }
     }
 }

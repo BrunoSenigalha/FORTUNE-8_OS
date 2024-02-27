@@ -5,6 +5,7 @@ using FORTUNE_8OS.Services;
 using FORTUNE_8OS_Tests.Utilitaries;
 using Moq;
 using System.Diagnostics;
+using System.Numerics;
 using System.Threading;
 using System.Xml.Linq;
 
@@ -19,10 +20,10 @@ namespace FORTUNE_8OS_Tests.ServicesTest
 
             var expectedProduct = new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0) };
-            var procutMockGateway = new Mock<IProductGateway>();
-            procutMockGateway.Setup(p => p.GetProducts()).Returns(expectedProduct);
+            var productGatewayMock = new Mock<IProductGateway>();
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(expectedProduct);
 
-            var productServices = new ProductServices(procutMockGateway.Object);
+            var productServices = new ProductServices(productGatewayMock.Object);
 
             //Act
             var result = productServices.GetProducts();
@@ -34,9 +35,9 @@ namespace FORTUNE_8OS_Tests.ServicesTest
         [Fact]
         public void GetProducts_WhenDoesNotExistProducts_ShouldReturnEmpty()
         {
-            var procutMockGateway = new Mock<IProductGateway>();
-            procutMockGateway.Setup(p => p.GetProducts()).Returns(new List<Product>());
-            var productServices = new ProductServices(procutMockGateway.Object);
+            var productGatewayMock = new Mock<IProductGateway>();
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product>());
+            var productServices = new ProductServices(productGatewayMock.Object);
 
             //Act
             var result = productServices.GetProducts();
@@ -52,19 +53,19 @@ namespace FORTUNE_8OS_Tests.ServicesTest
         public void FindProduct_WhenTheProductNameInputedExists_ShouldReturnTheProduct(string inputProductName)
         {
             //Arrange
-            var productMockGateway = new Mock<IProductGateway>();
-            productMockGateway.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
+            var productGatewayMock = new Mock<IProductGateway>();
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
 
-            var productServices = new ProductServices(productMockGateway.Object);
+            var productServices = new ProductServices(productGatewayMock.Object);
 
             //Act
             var result = productServices.FindProduct(inputProductName);
 
             //Assert
             Assert.NotNull(result);
-            productMockGateway.Verify(p => p.GetProducts(), Times.Once);
+            productGatewayMock.Verify(p => p.GetProducts(), Times.Once);
         }
 
         [Theory]
@@ -74,19 +75,19 @@ namespace FORTUNE_8OS_Tests.ServicesTest
         public void FindProduct_WhenTheProductNameInputedDoenstExist_ShouldReturnNull(string inputProductName)
         {
             //Arrange
-            var productMockGateway = new Mock<IProductGateway>();
-            productMockGateway.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
+            var productGatewayMock = new Mock<IProductGateway>();
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
 
-            var productServices = new ProductServices(productMockGateway.Object);
+            var productServices = new ProductServices(productGatewayMock.Object);
 
             //Act
             var result = productServices.FindProduct(inputProductName);
 
             //Assert
             Assert.Null(result);
-            productMockGateway.Verify(p => p.GetProducts(), Times.Once);
+            productGatewayMock.Verify(p => p.GetProducts(), Times.Once);
         }
 
         [Theory]
@@ -96,11 +97,11 @@ namespace FORTUNE_8OS_Tests.ServicesTest
         public void CreadNewProduct_WhenInputValidValue_ShouldReturnPositiveMessage(string productName, string productDescription, string quantity, string price, string category)
         {
             //Arrange
-            var productMockGateway = new Mock<IProductGateway>();
-            productMockGateway.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
+            var productGatewayMock = new Mock<IProductGateway>();
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productMockGateway.Object);
+            var productServices = new ProductServices(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(productName, productDescription, quantity, price, category);
@@ -110,7 +111,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
 
             //Assert
             Assert.Equal($"The product: {productName} was successfully created", result);
-            productMockGateway.Verify(p => p.PostProduct(It.IsAny<Product>()), Times.Once);
+            productGatewayMock.Verify(p => p.PostProduct(It.IsAny<Product>()), Times.Once);
             consoleInputCapture.Dispose();
             consoleOutputCapture.Dispose();
         }
@@ -121,11 +122,11 @@ namespace FORTUNE_8OS_Tests.ServicesTest
         public void CreateNewProduct_WhenInputtingAnExistingName_ShouldReturnProducDoesExistMessage(string productName, string productDescription, string quantity, string price, string category)
         {
             //Arrange
-            var productMockGateway = new Mock<IProductGateway>();
-            productMockGateway.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
+            var productGatewayMock = new Mock<IProductGateway>();
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productMockGateway.Object);
+            var productServices = new ProductServices(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(productName, productDescription, quantity, price, category);
@@ -135,7 +136,9 @@ namespace FORTUNE_8OS_Tests.ServicesTest
 
             //Assert
             Assert.Equal($"The product {productName} does exist", result);
-            productMockGateway.Verify(p => p.PostProduct(It.IsAny<Product>()), Times.Never);
+            productGatewayMock.Verify(p => p.PostProduct(It.IsAny<Product>()), Times.Never);
+            consoleInputCapture.Dispose();
+            consoleOutputCapture.Dispose();
         }
 
         [Theory]
@@ -145,21 +148,23 @@ namespace FORTUNE_8OS_Tests.ServicesTest
         public void CreateNewProduct_WhenInputtingAnNameLassThanThreeCharacters_ShouldReturnAnDomainExceptionValidation(string productName, string productDescription, string quantity, string price, string category)
         {
             //Arrange
-            var productMockGateway = new Mock<IProductGateway>();
-            productMockGateway.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
+            var productGatewayMock = new Mock<IProductGateway>();
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productMockGateway.Object);
+            var productServices = new ProductServices(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(productName, productDescription, quantity, price, category);
 
             //Act
-            var exception = Assert.Throws<DomainExceptionValidation>(() => productServices.CreateNewProduct()) ;
+            var exception = Assert.Throws<DomainExceptionValidation>(() => productServices.CreateNewProduct());
 
             //Assert
             Assert.Equal("The name must have a minimum of three characters.", exception.Message);
-            productMockGateway.Verify(p => p.PostProduct(It.IsAny<Product>()), Times.Never);
+            productGatewayMock.Verify(p => p.PostProduct(It.IsAny<Product>()), Times.Never);
+            consoleInputCapture.Dispose();
+            consoleOutputCapture.Dispose();
         }
 
         [Theory]
@@ -169,11 +174,11 @@ namespace FORTUNE_8OS_Tests.ServicesTest
         public void CreateNewProduct_WhenInputtingAnEmptyNameField_ShouldReturnAnDomainExceptionValidation(string productName, string productDescription, string quantity, string price, string category)
         {
             //Arrange
-            var productMockGateway = new Mock<IProductGateway>();
-            productMockGateway.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
+            var productGatewayMock = new Mock<IProductGateway>();
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productMockGateway.Object);
+            var productServices = new ProductServices(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(productName, productDescription, quantity, price, category);
@@ -183,7 +188,9 @@ namespace FORTUNE_8OS_Tests.ServicesTest
 
             //Assert
             Assert.Equal("The field name can't be empty.", exception.Message);
-            productMockGateway.Verify(p => p.PostProduct(It.IsAny<Product>()), Times.Never);
+            productGatewayMock.Verify(p => p.PostProduct(It.IsAny<Product>()), Times.Never);
+            consoleInputCapture.Dispose();
+            consoleOutputCapture.Dispose();
         }
 
         [Theory]
@@ -192,11 +199,11 @@ namespace FORTUNE_8OS_Tests.ServicesTest
         public void CreateNewProduct_WhenInputWrongNumeralValue_ShouldReturnAFormatErrorMessage(string productName, string productDescription, string quantity, string price, string category)
         {
             //Arrange
-            var productMockGateway = new Mock<IProductGateway>();
-            productMockGateway.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
+            var productGatewayMock = new Mock<IProductGateway>();
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productMockGateway.Object);
+            var productServices = new ProductServices(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(productName, productDescription, quantity, price, category);
@@ -206,7 +213,9 @@ namespace FORTUNE_8OS_Tests.ServicesTest
 
             //Assert
             Assert.Equal("Format error: The input string 'Wrong Value' was not in a correct format.", result);
-            productMockGateway.Verify(p => p.PostProduct(It.IsAny<Product>()), Times.Never);
+            productGatewayMock.Verify(p => p.PostProduct(It.IsAny<Product>()), Times.Never);
+            consoleInputCapture.Dispose();
+            consoleOutputCapture.Dispose();
         }
 
         [Theory]
@@ -214,11 +223,11 @@ namespace FORTUNE_8OS_Tests.ServicesTest
         public void CreateNewProduct_WhenInputEmptyEnumValue_ShouldReturnAFormatErrorMessage(string productName, string productDescription, string quantity, string price, string category)
         {
             //Arrange
-            var productMockGateway = new Mock<IProductGateway>();
-            productMockGateway.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
+            var productGatewayMock = new Mock<IProductGateway>();
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productMockGateway.Object);
+            var productServices = new ProductServices(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(productName, productDescription, quantity, price, category);
@@ -228,7 +237,9 @@ namespace FORTUNE_8OS_Tests.ServicesTest
 
             //Assert
             Assert.Equal("Argument error: Value cannot be null. (Parameter 'value')", result);
-            productMockGateway.Verify(p => p.PostProduct(It.IsAny<Product>()), Times.Never);
+            productGatewayMock.Verify(p => p.PostProduct(It.IsAny<Product>()), Times.Never);
+            consoleInputCapture.Dispose();
+            consoleOutputCapture.Dispose();
         }
 
         [Theory]
@@ -236,11 +247,11 @@ namespace FORTUNE_8OS_Tests.ServicesTest
         public void CreateNewProduct_WhenInputWrongEnumValue_ShouldReturnAFormatErrorMessage(string productName, string productDescription, string quantity, string price, string category)
         {
             //Arrange
-            var productMockGateway = new Mock<IProductGateway>();
-            productMockGateway.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
+            var productGatewayMock = new Mock<IProductGateway>();
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productMockGateway.Object);
+            var productServices = new ProductServices(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(productName, productDescription, quantity, price, category);
@@ -250,7 +261,110 @@ namespace FORTUNE_8OS_Tests.ServicesTest
 
             //Assert
             Assert.Equal($"Argument error: Requested value '{category}' was not found.", result);
-            productMockGateway.Verify(p => p.PostProduct(It.IsAny<Product>()), Times.Never);
+            productGatewayMock.Verify(p => p.PostProduct(It.IsAny<Product>()), Times.Never);
+            consoleInputCapture.Dispose();
+            consoleOutputCapture.Dispose();
+        }
+
+        [Theory]
+        [InlineData("Valid Product", "5")]
+        [InlineData("  Valid Product    ", "5")]
+        [InlineData("Valid Product", "0")]
+        [InlineData("Valid Product", "")]
+        public void UpdateProductQuantity_WhenInputValidNameAndQuantity_ShouldReturnConfirmationMessage(string inputName, string inputQuantity)
+        {
+            //Arrange
+            var productGatewayMock = new Mock<IProductGateway>();
+            var product = new Product(1,
+                "Valid Product", "Valid Product Description", 20, 15.5M, 0);
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { product });
+            var productServices = new ProductServices(productGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture(inputName, inputQuantity);
+
+            //Act
+            var result = productServices.UpdateProductQuantity();
+
+            //Assert
+            Assert.Equal($"Product Valid Product quantity was update to: {product.Quantity}", result);
+            productGatewayMock.Verify(p => p.UpdateProduct(It.IsAny<Product>()), Times.Once);
+            consoleInputCapture.Dispose();
+            consoleOutputCapture.Dispose();
+        }
+
+        [Theory]
+        [InlineData("Invalid Product", "5")]
+        [InlineData("", "5")]
+        public void UpdateProductQuantity_WhenInputInvalidName_ShouldReturnNotFoundMessage(string inputName, string inputQuantity)
+        {
+            //Arrange
+            var productGatewayMock = new Mock<IProductGateway>();
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
+                "Valid Product", "Valid Product Description", 20, 15.5M, 0),
+                new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
+            var productServices = new ProductServices(productGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture(inputName, inputQuantity);
+
+            //Act
+            var result = productServices.UpdateProductQuantity();
+
+            //Assert
+            Assert.Equal($"Product not found", result);
+            productGatewayMock.Verify(p => p.UpdateProduct(It.IsAny<Product>()), Times.Never);
+            consoleInputCapture.Dispose();
+            consoleOutputCapture.Dispose();
+        }
+
+        [Theory]
+        [InlineData("Valid Product", "-5")]
+        public void UpdateProductQuantity_WhenInputLessThanZeroQuantity_ShouldReturnErrorMessage(string inputName, string inputQuantity)
+        {
+            //Arrange
+            var productGatewayMock = new Mock<IProductGateway>();
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
+                "Valid Product", "Valid Product Description", 20, 15.5M, 0),
+                new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
+            var productServices = new ProductServices(productGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture(inputName, inputQuantity);
+
+            //Act
+            var exception = Assert.Throws<DomainExceptionValidation>(() => productServices.UpdateProductQuantity());
+
+            //Assert
+            Assert.Equal($"The quantity can't be less than 0", exception.Message);
+            productGatewayMock.Verify(p => p.UpdateProduct(It.IsAny<Product>()), Times.Never);
+            consoleInputCapture.Dispose();
+            consoleOutputCapture.Dispose();
+        }
+
+        [Theory]
+        [InlineData("Valid Product", "WrongValue")]
+        [InlineData("Valid Product", " 6  7 ")]
+        public void UpdateProductQuantity_WhenInputWrongValueQuantity_ShouldReturnErrorMessage(string inputName, string inputQuantity)
+        {
+            //Arrange
+            var productGatewayMock = new Mock<IProductGateway>();
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
+                "Valid Product", "Valid Product Description", 20, 15.5M, 0),
+                new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
+            var productServices = new ProductServices(productGatewayMock.Object);
+
+            var consoleOutputCapture = new ConsoleOutputCapture();
+            var consoleInputCapture = new ConsoleInputCapture(inputName, inputQuantity);
+
+            //Act
+            var result = productServices.UpdateProductQuantity();
+
+            //Assert
+            Assert.Equal($"Format error: The input string '{inputQuantity}' was not in a correct format.", result);
+            productGatewayMock.Verify(p => p.UpdateProduct(It.IsAny<Product>()), Times.Never);
+            consoleInputCapture.Dispose();
+            consoleOutputCapture.Dispose();
         }
     }
 }

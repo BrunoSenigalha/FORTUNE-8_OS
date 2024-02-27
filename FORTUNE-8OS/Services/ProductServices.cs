@@ -55,13 +55,43 @@ namespace FORTUNE_8OS.Services
         public Product? FindProduct(string productName)
         {
             var products = GetProducts();
-            var product = products.Where(p => p.Name.Equals(productName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            var product = products.Where(p => p.Name.Equals(productName.Trim(), StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
             return product;
         }
 
         public IEnumerable<Product> GetProducts()
         {
             return _productGateway.GetProducts();
+        }
+
+        public string UpdateProductQuantity()
+        {
+            Console.WriteLine("Type the product name");
+            string? productName = Console.ReadLine();
+
+            var product = FindProduct(productName);
+
+            if (product is null)
+            {
+                return $"Product not found";
+            }
+            try
+            {
+                Console.WriteLine("Enter the new quantity to add:");
+                int quantity = Convert.ToInt32(Console.ReadLine());
+                product.UpdateQuantity(quantity);
+                _productGateway.UpdateProduct(product);
+
+                return $"Product {product.Name} quantity was update to: {product.Quantity}";
+            }
+            catch (FormatException ex)
+            {
+                return $"Format error: {ex.Message}";
+            }
+            catch (ArgumentException ex)
+            {
+                return $"Argument error: {ex.Message}";
+            }
         }
     }
 }
