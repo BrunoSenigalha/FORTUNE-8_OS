@@ -29,7 +29,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             shipGatewayMock.Setup(p => p.GetShipList()).Returns(new List<Ship> { new Ship(1, "ShipOne", 60M) });
 
             var scrapGatewayMock = new Mock<IScrapGateway>();
-            var scrapServices = new ScrapServices(scrapGatewayMock.Object, itemGatewayMock.Object, shipGatewayMock.Object);
+            var scrapServices = new ScrapService(scrapGatewayMock.Object, itemGatewayMock.Object, shipGatewayMock.Object);
 
             //Act
             (string result1, decimal result2) = scrapServices.PostScrapItems(inputValue);
@@ -55,7 +55,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             shipGatewayMock.Setup(p => p.GetShipList()).Returns(new List<Ship> { new Ship(1, "ShipOne", 60M) });
 
             var scrapGatewayMock = new Mock<IScrapGateway>();
-            var scrapServices = new ScrapServices(scrapGatewayMock.Object, itemGatewayMock.Object, shipGatewayMock.Object);
+            var scrapServices = new ScrapService(scrapGatewayMock.Object, itemGatewayMock.Object, shipGatewayMock.Object);
 
             //Act
             (string result1, decimal result2) = scrapServices.PostScrapItems(inputValue);
@@ -79,7 +79,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             shipGatewayMock.Setup(p => p.GetShipList()).Returns(new List<Ship> { new Ship(1, "ShipOne", 60M) });
 
             var scrapGatewayMock = new Mock<IScrapGateway>();
-            var scrapServices = new ScrapServices(scrapGatewayMock.Object, itemGatewayMock.Object, shipGatewayMock.Object);
+            var scrapServices = new ScrapService(scrapGatewayMock.Object, itemGatewayMock.Object, shipGatewayMock.Object);
 
             //Act
             (string result1, decimal result2) = scrapServices.PostScrapItems(inputValue);
@@ -103,7 +103,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             shipGatewayMock.Setup(p => p.GetShipList()).Returns(new List<Ship> { new Ship(1, "ShipOne", 60M) });
 
             var scrapGatewayMock = new Mock<IScrapGateway>();
-            var scrapServices = new ScrapServices(scrapGatewayMock.Object, itemGatewayMock.Object, shipGatewayMock.Object);
+            var scrapServices = new ScrapService(scrapGatewayMock.Object, itemGatewayMock.Object, shipGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(inputData, inputOption);

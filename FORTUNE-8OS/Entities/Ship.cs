@@ -34,6 +34,5 @@ namespace FORTUNE_8OS.Entities
         {
             Credits -= credits;
         }
-        
     }
 }

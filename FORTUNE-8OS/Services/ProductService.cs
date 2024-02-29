@@ -5,7 +5,7 @@ using FORTUNE_8OS.Interfaces;
 
 namespace FORTUNE_8OS.Services
 {
-    public class ProductServices(IProductGateway productGateway)
+    public class ProductService(IProductGateway productGateway)
     {
         private readonly IProductGateway _productGateway = productGateway;
 

@@ -1,6 +1,5 @@
 ﻿using FORTUNE_8OS.Gateways;
 using FORTUNE_8OS.Services;
-using System.Runtime.CompilerServices;
 
 ShipGateway shipGateway = new();
 ShipService shipService = new(shipGateway);
@@ -9,9 +8,9 @@ shipService.CreateShip();
 ItemGateway itemGateway = new();
 ItemService itemService = new(itemGateway);
 ScrapGateway scrapGateway = new();
-ScrapServices scrapServices = new(scrapGateway, itemGateway, shipGateway);
+ScrapService scrapServices = new(scrapGateway, itemGateway, shipGateway);
 ProductGateway productGateway = new();
-ProductServices productServices = new(productGateway);
+ProductService productServices = new(productGateway);
 string message;
 
 Console.Clear();

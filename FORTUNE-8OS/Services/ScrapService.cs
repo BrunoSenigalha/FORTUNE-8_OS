@@ -3,21 +3,17 @@ using FORTUNE_8OS.Interfaces;
 
 namespace FORTUNE_8OS.Services
 {
-    public class ScrapServices
+    public class ScrapService
     {
         private readonly IScrapGateway _scrapGateway;
-        private readonly IItemGateway _itemGateway;
-        private readonly IShipGateway _shipGateway;
         private readonly ItemService _itemService;
         private readonly ShipService _shipService;
 
-        public ScrapServices(IScrapGateway scrapGateway, IItemGateway itemGateway, IShipGateway shipGateway)
+        public ScrapService(IScrapGateway scrapGateway, IItemGateway itemGateway, IShipGateway shipGateway)
         {
             _scrapGateway = scrapGateway;
-            _itemGateway = itemGateway;
-            _shipGateway = shipGateway;
-            _itemService = new ItemService(_itemGateway);
-            _shipService = new ShipService(_shipGateway);
+            _itemService = new ItemService(itemGateway);
+            _shipService = new ShipService(shipGateway);
         }
 
         public string ImputScrapInfo()
@@ -68,7 +64,7 @@ namespace FORTUNE_8OS.Services
                     itemName += strings[i] + " ";
                 }
 
-                var itemsFromDatabase = _itemGateway.GetItemList();
+                var itemsFromDatabase = _itemService.GetItems();
                 var itemForScrap = itemsFromDatabase.Where(p => p.Name.Equals(itemName.TrimEnd(), StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
                 if (itemForScrap != null)
                 {

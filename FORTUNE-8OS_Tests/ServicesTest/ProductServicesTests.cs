@@ -23,7 +23,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             var productGatewayMock = new Mock<IProductGateway>();
             productGatewayMock.Setup(p => p.GetProducts()).Returns(expectedProduct);
 
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             //Act
             var result = productServices.GetProducts();
@@ -37,7 +37,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
         {
             var productGatewayMock = new Mock<IProductGateway>();
             productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product>());
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             //Act
             var result = productServices.GetProducts();
@@ -58,7 +58,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
 
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             //Act
             var result = productServices.FindProduct(inputProductName);
@@ -80,7 +80,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
 
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             //Act
             var result = productServices.FindProduct(inputProductName);
@@ -101,7 +101,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(productName, productDescription, quantity, price, category);
@@ -126,7 +126,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(productName, productDescription, quantity, price, category);
@@ -152,7 +152,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(productName, productDescription, quantity, price, category);
@@ -178,7 +178,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(productName, productDescription, quantity, price, category);
@@ -203,7 +203,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(productName, productDescription, quantity, price, category);
@@ -227,7 +227,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(productName, productDescription, quantity, price, category);
@@ -251,7 +251,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(productName, productDescription, quantity, price, category);
@@ -278,7 +278,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             var product = new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0);
             productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { product });
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(inputName, inputQuantity);
@@ -303,7 +303,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(inputName, inputQuantity);
@@ -327,7 +327,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(inputName, inputQuantity);
@@ -352,7 +352,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { new Product(1,
                 "Valid Product", "Valid Product Description", 20, 15.5M, 0),
                 new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0) });
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(inputName, inputQuantity);
@@ -377,7 +377,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             var product1 = new Product(1, "Valid Product", "Valid Product Description", 20, 15.5M, 0);
 
             productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { product1 });
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(inputName);
@@ -404,7 +404,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             var product2 = new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0);
 
             productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { product1, product2 });
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(inputName);
@@ -429,7 +429,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             var product2 = new Product(2, "Another Product", "Another Product Description", 20, 15.5M, 0);
 
             productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product> { product1, product2 });
-            var productServices = new ProductServices(productGatewayMock.Object);
+            var productServices = new ProductService(productGatewayMock.Object);
 
             var consoleOutputCapture = new ConsoleOutputCapture();
             var consoleInputCapture = new ConsoleInputCapture(inputName);
