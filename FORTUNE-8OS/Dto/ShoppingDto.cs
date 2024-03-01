@@ -49,7 +49,8 @@ namespace FORTUNE_8OS.Dto
 
             Console.WriteLine();
             string? productName = Console.ReadLine();
-            _shoppingService.ProcessInformation(productName, productsList);
+            var message = _shoppingService.ProcessInformation(productName, productsList);
+            Console.WriteLine(message);
         }
 
         private void ListOfProducts(List<Product> products)

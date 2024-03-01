@@ -38,10 +38,14 @@ namespace FORTUNE_8OS.Entities
         public decimal Price { get; set; }
         public CategoryEnum Category { get; set; }
 
-        public void UpdateQuantity(int quantity)
+        public void AddQuantity(int quantity)
         {
             DomainExceptionValidation.When(quantity < 0, "The quantity can't be less than 0");
-            this.Quantity += quantity;
+            Quantity += quantity;
+        }
+        public void UpdateQuantity(int quantity)
+        {
+            Quantity -= quantity;
         }
     }
 }

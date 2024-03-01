@@ -74,7 +74,7 @@ namespace FORTUNE_8OS.Services
             {
                 Console.WriteLine("Enter the new quantity to add:");
                 int quantity = Convert.ToInt32(Console.ReadLine());
-                product.UpdateQuantity(quantity);
+                product.AddQuantity(quantity);
                 _productGateway.UpdateProduct(product);
 
                 return $"Product {product.Name} quantity was update to: {product.Quantity}";
@@ -89,7 +89,12 @@ namespace FORTUNE_8OS.Services
             }
         }
 
-       public string DeleteProduct()
+        public void UpdateProduct(Product product)
+        {
+            _productGateway.UpdateProduct(product);
+        }
+
+        public string DeleteProduct()
         {
             Console.WriteLine("Type the product name");
             string? productName = Console.ReadLine();

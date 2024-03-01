@@ -6,16 +6,17 @@ namespace FORTUNE_8OS.Services
 {
     public class ShoppingService
     {
-        private readonly ShipService _shipService;
-        public ShoppingService(IShipGateway shipGateway)
+        private readonly PaymentService _paymentService;
+        private readonly ShipGateway shipGateway = new();
+        private readonly ProductGateway productGateway = new();
+        public ShoppingService()
         {
-            _shipService = new ShipService(shipGateway);
+            _paymentService = new PaymentService(shipGateway, productGateway);
         }
 
         public string ProcessInformation(string productName, List<Product> products)
         {
             string[] strings = productName.Split(" ");
-
             int vetLenght = strings.Length - 1;
             string lastInfo = strings[vetLenght];
             string productNameRequired = "";
@@ -26,32 +27,26 @@ namespace FORTUNE_8OS.Services
             }
             productNameRequired = productNameRequired.Trim();
 
-            var requiredProduct = products.Where(p => p.Name.Equals(productNameRequired, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-            if (requiredProduct != null)
+            var requiredProductFromDatabase = products.Where(p => p.Name.Equals(productNameRequired, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            if (requiredProductFromDatabase != null)
             {
                 if (lastInfo.ToUpper() == "INFO")
                 {
-                    return $"{requiredProduct.Description}";
+                    return $"{requiredProductFromDatabase.Description}";
                 }
                 else if (int.TryParse(lastInfo, out int value))
                 {
                     int quantity = value;
-                    // ValidatePurchase(requiredProduct, quantity, ship);
+                    return _paymentService.ValidatePurchase(requiredProductFromDatabase, quantity);
                 }
                 else if (lastInfo.ToUpper() == "BUY")
                 {
                     Console.WriteLine("Entry the quantity you wish to purchase");
-                    int quantity = int.Parse(Console.ReadLine());
-                    //ValidatePurchase(requiredProduct, quantity, ship);
+                    int quantity = Convert.ToInt32(Console.ReadLine());
+                    return _paymentService.ValidatePurchase(requiredProductFromDatabase, quantity);
                 }
             }
-            else
-            {
-                return "Value is null";
-            }
-               
-
-            return "product";
+            return "Value is null";
         }
 
         public Dictionary<int, decimal> PromotionGenerator(int vetLenght)

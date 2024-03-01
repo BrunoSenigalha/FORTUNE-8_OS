@@ -367,6 +367,23 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             consoleOutputCapture.Dispose();
         }
 
+        [Fact]
+        public void UpdateProdut_WhenInputProduct()
+        {
+            //Arrange
+            var productGatewayMock = new Mock<IProductGateway>();
+            var product = new Product(1, "Valid Product", "Valid Product Description", 20, 15.5M, 0);
+            var updatedProduct = new Product(1, "New Value", "Valid Product Description", 12, 15.5M, 0);
+            productGatewayMock.Setup(p => p.GetProducts()).Returns(new List<Product>() { product });
+            var productService = new ProductService(productGatewayMock.Object);
+
+            //Act
+            productService.UpdateProduct(updatedProduct);
+
+            //Assert
+            productGatewayMock.Verify(p => p.UpdateProduct(It.IsAny<Product>()), Times.Once);
+        }
+
         [Theory]
         [InlineData("Valid Product")]
         [InlineData("  Valid Product ")]
