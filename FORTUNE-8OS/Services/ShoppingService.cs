@@ -30,7 +30,7 @@ namespace FORTUNE_8OS.Services
             var requiredProductFromDatabase = products.Where(p => p.Name.Equals(productNameRequired, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
             if (requiredProductFromDatabase != null)
             {
-                if (lastInfo.ToUpper() == "INFO")
+                if (lastInfo.Equals("INFO", StringComparison.CurrentCultureIgnoreCase))
                 {
                     return $"{requiredProductFromDatabase.Description}";
                 }
@@ -39,7 +39,7 @@ namespace FORTUNE_8OS.Services
                     int quantity = value;
                     return _paymentService.ValidatePurchase(requiredProductFromDatabase, quantity);
                 }
-                else if (lastInfo.ToUpper() == "BUY")
+                else if (lastInfo.Equals("BUY", StringComparison.CurrentCultureIgnoreCase))
                 {
                     Console.WriteLine("Entry the quantity you wish to purchase");
                     int quantity = Convert.ToInt32(Console.ReadLine());

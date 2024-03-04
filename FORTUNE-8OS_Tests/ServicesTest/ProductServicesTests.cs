@@ -1,4 +1,5 @@
 ﻿using FORTUNE_8OS.Entities;
+using FORTUNE_8OS.Entities.Enums;
 using FORTUNE_8OS.Exceptions;
 using FORTUNE_8OS.Interfaces;
 using FORTUNE_8OS.Services;
@@ -19,7 +20,7 @@ namespace FORTUNE_8OS_Tests.ServicesTest
             //Arrange
 
             var expectedProduct = new List<Product> { new Product(1,
-                "Valid Product", "Valid Product Description", 20, 15.5M, 0) };
+                "Valid Product", "Valid Product Description", 20, 15.5M, CategoryEnum.ShipUpgrade) };
             var productGatewayMock = new Mock<IProductGateway>();
             productGatewayMock.Setup(p => p.GetProducts()).Returns(expectedProduct);
 

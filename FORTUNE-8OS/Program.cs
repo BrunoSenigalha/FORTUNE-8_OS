@@ -1,4 +1,5 @@
-﻿using FORTUNE_8OS.Gateways;
+﻿using FORTUNE_8OS.Dto;
+using FORTUNE_8OS.Gateways;
 using FORTUNE_8OS.Services;
 
 ShipGateway shipGateway = new();
@@ -11,6 +12,9 @@ ScrapGateway scrapGateway = new();
 ScrapService scrapServices = new(scrapGateway, itemGateway, shipGateway);
 ProductGateway productGateway = new();
 ProductService productServices = new(productGateway);
+ShoppingService shoppingService = new ShoppingService();
+ShoppingDto shoppingDto = new(shipService, shoppingService);
+
 string message;
 
 Console.Clear();
@@ -61,7 +65,8 @@ do
 
         case "STORE":
             Console.Clear();
-            Console.WriteLine("This is a Store");
+            var products = productServices.GetProducts();
+            shoppingDto.ShopProducts(products);
             break;
 
         case "PRODUCT SERVICES":

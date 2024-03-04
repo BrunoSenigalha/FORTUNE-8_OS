@@ -16,17 +16,20 @@ namespace FORTUNE_8OS.Services
         {
             _shipService = new ShipService(shipGateway);
             _productService = new ProductService(productService);
-
         }
 
         public string ValidatePurchase(Product requiredProduct, int quantity)
         {
+            if (quantity < 0)
+            {
+                return "The quantity cannot be negative";
+            }
+
             var ship = _shipService.GetShip();
             decimal total = requiredProduct.Price * quantity;
 
-            if (ship is not null && total <= ship.Credits && requiredProduct.Quantity <= quantity)
+            if (ship is not null && total <= ship.Credits && requiredProduct.Quantity >= quantity)
             {
-                Console.Clear();
                 Console.WriteLine($"You have requested to order a {requiredProduct.Name}\n" +
                 $"Total cost of item: {total:F2}.\n");
                 Console.WriteLine("Please CONFIRM or DENY.");
@@ -35,7 +38,7 @@ namespace FORTUNE_8OS.Services
                 if (option != null && option.Equals("CONFIRM", StringComparison.CurrentCultureIgnoreCase))
                 {
                     CompletePurchase(ship, requiredProduct, quantity, total);
-                    return "Thank you for your preference";
+                    return $"You ordered {requiredProduct.Name} and your new balance is {ship.Credits}";
                 }
                 return "You canceled the purchase";
             }
@@ -46,8 +49,7 @@ namespace FORTUNE_8OS.Services
 
         private void CompletePurchase(Ship ship, Product product, int quantity, decimal total)
         {
-            Console.Clear();
-            ship.AddCredits(total);
+            ship.RemoveCredits(total);
             _shipService.UpdateShip(ship);
             product.UpdateQuantity(quantity);
             _productService.UpdateProduct(product);
