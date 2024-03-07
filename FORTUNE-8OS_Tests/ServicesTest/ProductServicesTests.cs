@@ -5,10 +5,6 @@ using FORTUNE_8OS.Interfaces;
 using FORTUNE_8OS.Services;
 using FORTUNE_8OS_Tests.Utilitaries;
 using Moq;
-using System.Diagnostics;
-using System.Numerics;
-using System.Threading;
-using System.Xml.Linq;
 
 namespace FORTUNE_8OS_Tests.ServicesTest
 {
@@ -18,9 +14,8 @@ namespace FORTUNE_8OS_Tests.ServicesTest
         public void GetProducts_WhenExistProducts_ShouldReturnAListOfProducts()
         {
             //Arrange
+            var expectedProduct = new List<Product> { new Product(1, "Valid Product", "Valid Product Description", 20, 15.5M, CategoryEnum.ShipUpgrade) };
 
-            var expectedProduct = new List<Product> { new Product(1,
-                "Valid Product", "Valid Product Description", 20, 15.5M, CategoryEnum.ShipUpgrade) };
             var productGatewayMock = new Mock<IProductGateway>();
             productGatewayMock.Setup(p => p.GetProducts()).Returns(expectedProduct);
 

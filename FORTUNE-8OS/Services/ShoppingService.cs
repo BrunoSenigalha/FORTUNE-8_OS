@@ -37,7 +37,8 @@ namespace FORTUNE_8OS.Services
                 else if (int.TryParse(lastInfo, out int value))
                 {
                     int quantity = value;
-                    return _paymentService.ValidatePurchase(requiredProductFromDatabase, quantity);
+                    var message = _paymentService.ValidatePurchase(requiredProductFromDatabase, quantity);
+                    return message;
                 }
                 else if (lastInfo.Equals("BUY", StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -46,7 +47,7 @@ namespace FORTUNE_8OS.Services
                     return _paymentService.ValidatePurchase(requiredProductFromDatabase, quantity);
                 }
             }
-            return "Value is null";
+            return "Wrong value informed";
         }
 
         public Dictionary<int, decimal> PromotionGenerator(int vetLenght)
@@ -80,8 +81,5 @@ namespace FORTUNE_8OS.Services
             }
             return null;
         }
-
-
-
     }
 }

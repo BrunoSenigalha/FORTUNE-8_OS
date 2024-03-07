@@ -8,10 +8,13 @@ shipService.CreateShip();
 
 ItemGateway itemGateway = new();
 ItemService itemService = new(itemGateway);
+
 ScrapGateway scrapGateway = new();
 ScrapService scrapServices = new(scrapGateway, itemGateway, shipGateway);
+
 ProductGateway productGateway = new();
 ProductService productServices = new(productGateway);
+
 ShoppingService shoppingService = new ShoppingService();
 ShoppingDto shoppingDto = new(shipService, shoppingService);
 

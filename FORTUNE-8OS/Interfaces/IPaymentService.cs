@@ -11,6 +11,5 @@ namespace FORTUNE_8OS.Interfaces
     {
         string ValidatePurchase(Product requiredProduct, int quantity);
         public void CompletePurchase(Ship ship, Product product, int quantity, decimal total);
-
     }
 }
